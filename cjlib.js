@@ -244,6 +244,7 @@ var cjs = function() {
     form.id = 'input-form';
     form.onsubmit = function() {
       submitInputForm();
+      location.reload();
       return false;
     };
 
@@ -292,6 +293,7 @@ var cjs = function() {
     inp.name = 'delete';
     inp.onclick = function() {
       deleteItem(false);
+      window.location.reload();
     };
     inp.style.display = 'none';
     p.appendChild(inp);
@@ -423,11 +425,15 @@ var cjs = function() {
             ajax.open('post', href, false);
           }
           ajax.setRequestHeader('content-type', g.contentType);
-          ajax.send(item);
-          if (ajax.status > 399) {
-            alert('Error sending task!\n' + ajax.status);
-          } else {
-            window.location = window.location;
+          try {
+            ajax.send(item);
+          }
+          catch(ex) {
+            if (ajax.status > 399) {
+              alert('Error sending task!\n' + ajax.status);
+            } else {
+              window.location.reload();
+            }
           }
         }
       }
@@ -450,7 +456,7 @@ var cjs = function() {
           if (ajax.status > 399) {
             alert('Error deleting task!\n' + ajax.status + '\n' + ajax.statusText);
           } else {
-            window.location = window.location;
+             window.location.reload();
           }
         }
       }
@@ -483,6 +489,6 @@ window.onload = function() {
   var c = null;
 
   c = cjs();
-  c.g.collectionUrl = '/data';
+  c.g.collectionUrl = 'http://localhost:1337/api/';
   c.init();
 };
